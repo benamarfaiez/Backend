@@ -1,4 +1,6 @@
-﻿using Reservation.Api.Middlewares;
+﻿using Microsoft.EntityFrameworkCore;
+using Reservation.Api.Middlewares;
+using Reservation.Dal;
 using Reservation.Dal.Repositories;
 using Reservation.Domain.Interfaces.Repositories;
 using Reservation.Domain.Interfaces.Services;
@@ -11,6 +13,10 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        //Ajoutez le contexte de la base de données
+        builder.Services.AddDbContext<ReservationContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
         builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
         builder.Services.AddAuthentication()
            .AddJwtBearer(options =>

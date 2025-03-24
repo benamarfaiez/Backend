@@ -1,15 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Reservation.Dal.Entities;
 
-namespace Reservation.Dal.Entities;
+namespace Reservation.Dal;
 
 public partial class ReservationContext : DbContext
 {
-    public ReservationContext()
-    {
-    }
-
-    public ReservationContext(DbContextOptions<ReservationContext> options)
-        : base(options)
+    public ReservationContext(DbContextOptions<ReservationContext> options) : base(options)
     {
     }
 
@@ -25,6 +21,9 @@ public partial class ReservationContext : DbContext
         {
             entity.ToTable("Booking");
 
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
             entity.HasOne(d => d.Person).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -38,9 +37,12 @@ public partial class ReservationContext : DbContext
 
         modelBuilder.Entity<PersonEntity>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_User_1");
+            entity.HasKey(e => e.Id).HasName("PK_User");
 
             entity.ToTable("Person");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             entity.Property(e => e.FirstName)
                 .HasMaxLength(50)
@@ -52,17 +54,19 @@ public partial class ReservationContext : DbContext
 
         modelBuilder.Entity<RoomEntity>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_Room");
+
             entity.ToTable("Room");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             entity.Property(e => e.RoomName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
 
 }

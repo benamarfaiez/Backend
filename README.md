@@ -1,4 +1,4 @@
-# KataReservation API
+# Reservation API
 
 This project is a reservation system API built with .NET, providing REST endpoints to manage persons, rooms, and bookings.
 

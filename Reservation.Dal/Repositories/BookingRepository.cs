@@ -22,7 +22,7 @@ public class BookingRepository(ReservationContext context) : IBookingRepository
         await context.SaveChangesAsync();
 
         return new BookingRepositoryDto(
-            0,
+            entity.Id,
             entity.RoomId,
             entity.PersonId,
             entity.BookingDate,
