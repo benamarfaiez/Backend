@@ -35,11 +35,6 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
         logger.Log(LogLevel.Information, "Get Room by ID called with ID: {Id}", id);
         var room = await RoomService.GetRoomByIdAsync(id);
 
-        if (room == null)
-        {
-            return NotFound();
-        }
-
         return Ok(new RoomResponse(room));
     }
     [HttpPost]

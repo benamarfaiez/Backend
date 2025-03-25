@@ -7,8 +7,6 @@ namespace Reservation.Dal.Repositories;
 
 public class PersonRepository(ReservationContext context) : IPersonRepository
 {
-
-
     public async Task<IEnumerable<PersonRepositoryDto>> GetPersonsAsync()
     {
         var values = await context.People.ToListAsync();
@@ -57,5 +55,4 @@ public class PersonRepository(ReservationContext context) : IPersonRepository
         await context.SaveChangesAsync();
         return true;
     }
-
 }

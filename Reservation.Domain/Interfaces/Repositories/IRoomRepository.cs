@@ -1,5 +1,4 @@
 ﻿using Reservation.Domain.Dtos.Repositories;
-
 namespace Reservation.Domain.Interfaces.Repositories;
 public interface IRoomRepository
 {

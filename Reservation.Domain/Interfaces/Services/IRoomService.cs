@@ -1,7 +1,5 @@
 ﻿using Reservation.Domain.Dtos.Services;
-
 namespace Reservation.Domain.Interfaces.Services;
-
 public interface IRoomService
 {
     Task<RoomServiceDto> GetRoomByIdAsync(int id);

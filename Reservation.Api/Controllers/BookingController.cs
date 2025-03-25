@@ -17,6 +17,11 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<BookingResponse>> CreateBooking([FromBody] CreateBookingRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         logger.LogInformation("Tentative de création d'une réservation: PersonId {PersonId}, RoomId {RoomId}, Date {BookingDate}, Créneau {StartSlot}-{EndSlot}",
             request.PersonId, request.RoomId, request.BookingDate, request.StartSlot, request.EndSlot);
         try

@@ -53,15 +53,7 @@ public class RoomControllerTests
 
         Assert.Equal(room.RoomName, roomResponse.RoomName);
     }
-    [Fact]
-    public async Task GetRoomByIdAsync_WithNonExistingId_ReturnsNotFound()
-    {
-        _mockRoomService.Setup(s => s.GetRoomByIdAsync(999)).ReturnsAsync((RoomServiceDto)null!);
 
-        var result = await _controller.GetRoomByIdAsync(999);
-
-        Assert.IsType<NotFoundResult>(result.Result);
-    }
     [Fact]
     public async Task UpdateRoomAsync_WithNonExistingId_ReturnsNotFound()
     {

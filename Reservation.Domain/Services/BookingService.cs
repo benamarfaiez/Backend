@@ -5,7 +5,6 @@ using Reservation.Domain.Interfaces.Services;
 using Reservation.Domain.Models;
 
 namespace Reservation.Domain.Services;
-
 public class BookingService(IBookingRepository bookingRepository) : IBookingService
 {
     public async Task<BookingServiceDto> CreateBookingAsync(BookingServiceDto booking)

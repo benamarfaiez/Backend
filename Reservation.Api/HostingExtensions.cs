@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Reservation.Api.Middlewares;
 using Reservation.Dal;
 using Reservation.Dal.Repositories;
@@ -25,12 +26,16 @@ internal static class HostingExtensions
                options.TokenValidationParameters.ValidateAudience = false;
            });
 
-        //builder.Services.AddAuthorization();
-        //builder.Services.AddAuthorizationBuilder()
-        //    .AddPolicy("ReservationApiPolicy", policy =>
-        //    {
-        //        policy.RequireClaim("scope", "Reservation.Api");
-        //    });
+        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("ReservationApiPolicy", policy =>
+            {
+                policy.RequireClaim("scope", "Reservation.Api");
+            });
+
+        builder.Services.AddSingleton<IAuthenticationSchemeProvider, AuthenticationSchemeProvider>();
+        builder.Services.AddSingleton<BearerSecuritySchemeTransformer>();
+
         builder.Services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();

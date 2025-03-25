@@ -1,5 +1,4 @@
 ﻿using Reservation.Domain.Dtos.Services;
-
 namespace Reservation.Domain.Interfaces.Services;
 
 public interface IBookingService

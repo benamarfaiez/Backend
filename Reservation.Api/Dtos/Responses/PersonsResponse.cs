@@ -1,5 +1,4 @@
 ﻿using Reservation.Domain.Dtos.Services;
-
 namespace Reservation.Api.Dtos.Responses;
 
 public record PersonsResponse(IEnumerable<PersonResponse> Persons)

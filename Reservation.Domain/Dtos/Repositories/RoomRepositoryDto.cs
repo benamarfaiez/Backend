@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Reservation.Domain.Dtos.Services;
-
+﻿using Reservation.Domain.Dtos.Services;
 namespace Reservation.Domain.Dtos.Repositories;
 
 public record RoomRepositoryDto(int Id, string RoomName)

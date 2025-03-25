@@ -1,5 +1,4 @@
 ﻿using Reservation.Domain.Models;
-
 namespace Reservation.Domain.Dtos.Services;
 
 public record PersonServiceDto(int Id, string FirstName, string LastName)

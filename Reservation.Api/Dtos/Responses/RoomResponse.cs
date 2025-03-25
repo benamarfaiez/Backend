@@ -1,5 +1,4 @@
 ﻿using Reservation.Domain.Dtos.Services;
-
 namespace Reservation.Api.Dtos.Responses;
 
 public record RoomResponse(int Id, string RoomName)
