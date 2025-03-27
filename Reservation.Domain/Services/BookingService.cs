@@ -27,7 +27,6 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
         }
         catch (InvalidOperationException ex) when (ex.Message.Contains("créneau horaire"))
         {
-            // Si l'exception est due à un conflit de réservation, récupérer les créneaux disponibles
             var availableSlots = await GetAvailableSlotsForDay(booking.RoomId, booking.BookingDate);
             throw new Exception(
                 "Ce créneau horaire est déjà réservé pour cette salle. Voici les créneaux disponibles pour cette journée."
@@ -35,6 +34,56 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
         }
     }
 
+    public async Task<bool> DeleteBookingAsync(int bookingId)
+    {
+        return await bookingRepository.DeleteBookingAsync(bookingId);
+    }
+
+    public async Task<BookingServiceDto> GetBookingByIdAsync(int bookingId)
+    {
+        var result = await bookingRepository.GetBookingByIdAsync(bookingId);
+        return new BookingServiceDto(
+            new Booking(
+                result.ReservationId,
+                result.RoomId,
+                result.PersonId,
+                result.BookingDate,
+                result.StartSlot,
+                result.EndSlot
+            )
+        );
+    }
+
+    #region méthode privé
+    private async Task ValidateBookingAsync(BookingServiceDto booking)
+    {
+        if (booking.BookingDate.Date < DateTime.Today)
+        {
+            throw new InvalidOperationException("La date de réservation doit être une date future.");
+        }
+
+        if (booking.StartSlot >= booking.EndSlot)
+        {
+            throw new InvalidOperationException("L'heure de début doit être avant l'heure de fin.");
+        }
+
+        if (booking.StartSlot < 1 || booking.StartSlot > 24 || booking.EndSlot < 1 || booking.EndSlot > 24)
+        {
+            throw new InvalidOperationException("Les créneaux horaires doivent être entre 1 et 24.");
+        }
+
+        var conflictingBookings = await bookingRepository.GetConflictingBookingsAsync(
+            booking.RoomId,
+            booking.BookingDate,
+            booking.StartSlot,
+            booking.EndSlot
+        );
+
+        if (conflictingBookings.Any())
+        {
+            throw new InvalidOperationException("Ce créneau horaire est déjà réservé pour cette salle.");
+        }
+    }
     private async Task<List<SlotDto>> GetAvailableSlotsForDay(int roomId, DateTime date)
     {
         // Récupérer toutes les réservations pour cette salle et cette date
@@ -88,57 +137,7 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
 
         return availableSlots;
     }
-
-    public async Task<bool> DeleteBookingAsync(int bookingId)
-    {
-        return await bookingRepository.DeleteBookingAsync(bookingId);
-    }
-
-    public async Task<BookingServiceDto> GetBookingByIdAsync(int bookingId)
-    {
-        var result = await bookingRepository.GetBookingByIdAsync(bookingId);
-        return new BookingServiceDto(
-            new Booking(
-                result.ReservationId,
-                result.RoomId,
-                result.PersonId,
-                result.BookingDate,
-                result.StartSlot,
-                result.EndSlot
-            )
-        );
-    }
-
-    private async Task ValidateBookingAsync(BookingServiceDto booking)
-    {
-        if (booking.BookingDate.Date < DateTime.Today)
-        {
-            throw new InvalidOperationException("La date de réservation doit être une date future.");
-        }
-
-        if (booking.StartSlot >= booking.EndSlot)
-        {
-            throw new InvalidOperationException("L'heure de début doit être avant l'heure de fin.");
-        }
-
-        if (booking.StartSlot < 1 || booking.StartSlot > 24 || booking.EndSlot < 1 || booking.EndSlot > 24)
-        {
-            throw new InvalidOperationException("Les créneaux horaires doivent être entre 1 et 24.");
-        }
-
-        var conflictingBookings = await bookingRepository.GetConflictingBookingsAsync(
-            booking.RoomId,
-            booking.BookingDate,
-            booking.StartSlot,
-            booking.EndSlot
-        );
-
-        if (conflictingBookings.Any())
-        {
-            throw new InvalidOperationException("Ce créneau horaire est déjà réservé pour cette salle.");
-        }
-    }
-
+    #endregion
 }
 
 internal record SlotDto(int startSlot, int endtSlot);
