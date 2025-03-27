@@ -3,12 +3,31 @@ using Reservation.Api.Dtos.Responses;
 using Reservation.Domain.Dtos.Services;
 using Reservation.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Reservation.Domain.Services;
 
 namespace Reservation.Api.Controllers;
 [Route("api/bookings")]
 [ApiController]
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
 {
+
+    [HttpGet("{id}")]
+    [EndpointDescription("Obtenir une booking par son ID")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(PersonResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PersonResponse>> GetPersonByIdAsync(int id)
+    {
+        logger.Log(LogLevel.Information, "Get booking by ID called with ID: {Id}", id);
+        var booking = await bookingService.GetBookingByIdAsync(id);
+        if (booking == null)
+        {
+            return NotFound();
+        }
+        return Ok(new BookingResponse(booking));
+    }
+
     [HttpPost]
     [EndpointDescription("Créer une réservation")]
     [Produces("application/json")]

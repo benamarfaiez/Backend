@@ -94,6 +94,21 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
         return await bookingRepository.DeleteBookingAsync(bookingId);
     }
 
+    public async Task<BookingServiceDto> GetBookingByIdAsync(int bookingId)
+    {
+        var result = await bookingRepository.GetBookingByIdAsync(bookingId);
+        return new BookingServiceDto(
+            new Booking(
+                result.ReservationId,
+                result.RoomId,
+                result.PersonId,
+                result.BookingDate,
+                result.StartSlot,
+                result.EndSlot
+            )
+        );
+    }
+
     private async Task ValidateBookingAsync(BookingServiceDto booking)
     {
         if (booking.BookingDate.Date < DateTime.Today)

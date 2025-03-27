@@ -58,9 +58,7 @@ public class RoomControllerTests
     public async Task UpdateRoomAsync_WithNonExistingId_ReturnsNotFound()
     {
         var request = new UpdateRoomRequest ("Updated Room" );
-        //_mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName)).ReturnsAsync((RoomServiceDto)null);
-        _mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName))
-    .ReturnsAsync((RoomServiceDto)null!);
+        _mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName)).ReturnsAsync((RoomServiceDto)null!);
         var result = await _controller.UpdateRoomAsync(999, request);
 
         Assert.IsType<NotFoundResult>(result.Result);
