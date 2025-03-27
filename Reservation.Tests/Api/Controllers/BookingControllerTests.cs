@@ -5,6 +5,7 @@ using Reservation.Api.Dtos.Requests;
 using Reservation.Api.Dtos.Responses;
 using Reservation.Domain.Dtos.Services;
 using Microsoft.AspNetCore.Mvc;
+using Reservation.Domain.Models;
 
 namespace Reservation.Tests.Api.Controllers;
 
@@ -102,5 +103,36 @@ public class BookingControllerTests
         var result = await _controller.DeleteBooking(bookingId);
 
         Assert.IsType<NotFoundResult>(result);
+    }
+
+    [Fact]
+    public async Task GetBooking_ShouldReturnBookingAtAction_WhenBookingIsValid()
+    {
+        var reservationId = 1;
+        var bookingDto = new BookingServiceDto(
+            new Booking(
+                ReservationId: 1,
+                RoomId: 5,
+                PersonId: 8,
+                BookingDate: DateTime.Now,
+                StartSlot: 10,
+                EndSlot: 12
+            )
+        );
+
+
+        _mockBookingService.Setup(service => service.GetBookingByIdAsync(reservationId))
+            .ReturnsAsync(bookingDto);
+
+        var result = await _controller.GetBookingByIdAsync(reservationId);
+
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var response = Assert.IsType<BookingResponse>(okResult.Value);
+
+        Assert.Equal(bookingDto.RoomId, response.RoomId);
+        Assert.Equal(bookingDto.PersonId, response.PersonId);
+        Assert.Equal(bookingDto.BookingDate, response.BookingDate);
+        Assert.Equal(bookingDto.StartSlot, response.StartSlot);
+        Assert.Equal(bookingDto.EndSlot, response.EndSlot);
     }
 }

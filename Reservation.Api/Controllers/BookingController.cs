@@ -14,10 +14,10 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [HttpGet("{id}")]
     [EndpointDescription("Obtenir une booking par son ID")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(PersonResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<PersonResponse>> GetBookingByIdAsync(int id)
+    public async Task<ActionResult<BookingResponse>> GetBookingByIdAsync(int id)
     {
         logger.Log(LogLevel.Information, "Get booking by ID called with ID: {Id}", id);
         var booking = await bookingService.GetBookingByIdAsync(id);
