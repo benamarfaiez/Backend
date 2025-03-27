@@ -1,7 +1,7 @@
-﻿using Reservation.Dal.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Reservation.Dal.Entities;
 using Reservation.Domain.Dtos.Repositories;
 using Reservation.Domain.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Reservation.Dal.Repositories;
 
@@ -65,7 +65,7 @@ public class BookingRepository(ReservationContext context) : IBookingRepository
         }
 
         return new BookingRepositoryDto(
-            0,
+            booking.Id,
             booking.RoomId,
             booking.PersonId,
             booking.BookingDate,
@@ -83,7 +83,7 @@ public class BookingRepository(ReservationContext context) : IBookingRepository
                    (b.StartSlot < endSlot && b.EndSlot >= endSlot) ||
                    (b.StartSlot >= startSlot && b.EndSlot <= endSlot)))
             .Select(b => new BookingRepositoryDto(
-                0,
+                b.Id,
                 b.RoomId,
                 b.PersonId,
                 b.BookingDate,
