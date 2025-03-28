@@ -37,9 +37,13 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/uikit/dist/css/uikit.min.css",
+               "src/styles/style.scss"
             ],
-            "scripts": []
+            "scripts": [              
+              "node_modules/uikit/dist/js/uikit.min.js",
+              "node_modules/uikit/dist/js/uikit-icons.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -98,7 +102,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/uikit/dist/css/uikit.min.css",
+               "src/styles/style.scss"
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js"
