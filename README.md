@@ -25,18 +25,6 @@ This project is a reservation system API built with .NET, providing REST endpoin
 - **POST /api/bookings** => Create a new booking
 - **DELETE /api/bookings/{id}** => Delete a booking by id
 
-## Authentication
-
-This API is secured by JWT authentication. The rooms listing endpoint requires authentication.
-
-## Error Handling
-
-The API includes robust error handling:
-
-- **400 Bad Request** - Invalid input data
-- **404 Not Found** - Resource not found
-- **409 Conflict** - Booking conflicts with existing reservations
-- **500 Internal Server Error** - Unexpected server errors
 
 ## Booking System
 
@@ -66,17 +54,6 @@ The booking system allows users to:
 
 ## Technologies
 
-- .NET
+- .NET 9
 - ASP.NET Core
-- In-memory storage for data persistence
-
-## Getting Started
-
-1. Clone the repository
-2. Open the solution in Visual Studio or your preferred IDE
-3. Run the project
-4. Access the API at `https://localhost:5001/api`
-
-## Authentication
-
-To access the protected endpoints, you need to obtain a JWT token.
+- Angular 19
